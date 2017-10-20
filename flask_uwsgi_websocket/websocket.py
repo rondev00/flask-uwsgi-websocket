@@ -160,3 +160,10 @@ class WebSocket(object):
             self.blueprints[blueprint.name] = blueprint
             first_registration = True
         blueprint.register(self, options, first_registration)
+        
+    def flush(self):
+        self.receive()
+        try:
+            uwsgi.websocket_recv_nb()
+        except IOError, e:
+            pass
